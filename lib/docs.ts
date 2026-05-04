@@ -94,6 +94,20 @@ export function getAllDocMeta(): DocMeta[] {
   return [...docFiles].sort((a, b) => a.order - b.order);
 }
 
+async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, { cache: "force-cache" });
+      if (res.ok) return res;
+      if (i < retries - 1) await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+    } catch (e) {
+      if (i === retries - 1) throw e;
+      await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+    }
+  }
+  throw new Error(`Failed to fetch ${url} after ${retries} retries`);
+}
+
 export async function getDocContent(
   slug: string
 ): Promise<{ meta: DocMeta; content: string } | null> {
@@ -101,19 +115,11 @@ export async function getDocContent(
   if (!meta) return null;
 
   try {
-    const res = await fetch(`${DOCS_BASE}/${meta.file}`, {
-      next: { revalidate: false },
-    });
-
-    if (!res.ok) {
-      console.error(`Failed to fetch doc ${meta.file}: ${res.status}`);
-      return null;
-    }
-
+    const res = await fetchWithRetry(`${DOCS_BASE}/${meta.file}`);
     const content = await res.text();
     return { meta, content };
   } catch (error) {
     console.error(`Error fetching doc ${meta.file}:`, error);
-    return null;
+    throw error;
   }
 }

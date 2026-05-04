@@ -133,7 +133,7 @@
     },
     "quickstart": {
       "title": "Quick Start",
-      "steps": ["docker pull clawix/clawix:latest", "docker run -d -p 8080:8080 clawix/clawix", "curl http://localhost:8080/health"]
+      "steps": ["git clone https://github.com/ClawixAI/clawix.git", "cd clawix", "cp .env.example .env", "pnpm run install:clawix"]
     },
     "resources": [
       { "title": "API Reference", "description": "Complete REST API documentation", "href": "https://github.com/ClawixAI/clawix/wiki/API" },
