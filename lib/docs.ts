@@ -95,17 +95,20 @@ export function getAllDocMeta(): DocMeta[] {
 }
 
 async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+  let lastError: Error | null = null;
   for (let i = 0; i < retries; i++) {
     try {
-      const res = await fetch(url, { cache: "force-cache" });
+      const res = await fetch(url);
       if (res.ok) return res;
-      if (i < retries - 1) await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+      console.error(`Fetch attempt ${i + 1} failed: ${res.status} ${res.statusText}`);
+      lastError = new Error(`HTTP ${res.status}: ${res.statusText}`);
     } catch (e) {
-      if (i === retries - 1) throw e;
-      await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+      console.error(`Fetch attempt ${i + 1} error:`, e);
+      lastError = e instanceof Error ? e : new Error(String(e));
     }
+    if (i < retries - 1) await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
   }
-  throw new Error(`Failed to fetch ${url} after ${retries} retries`);
+  throw lastError ?? new Error(`Failed to fetch ${url} after ${retries} retries`);
 }
 
 export async function getDocContent(
