@@ -1,5 +1,7 @@
-const DOCS_BASE =
-  "https://raw.githubusercontent.com/ClawixAI/clawix/main/docs";
+import fs from "fs";
+import path from "path";
+
+const DOCS_DIR = path.join(process.cwd(), "content/docs");
 
 export interface DocMeta {
   slug: string;
@@ -94,35 +96,19 @@ export function getAllDocMeta(): DocMeta[] {
   return [...docFiles].sort((a, b) => a.order - b.order);
 }
 
-async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
-  let lastError: Error | null = null;
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) return res;
-      console.error(`Fetch attempt ${i + 1} failed: ${res.status} ${res.statusText}`);
-      lastError = new Error(`HTTP ${res.status}: ${res.statusText}`);
-    } catch (e) {
-      console.error(`Fetch attempt ${i + 1} error:`, e);
-      lastError = e instanceof Error ? e : new Error(String(e));
-    }
-    if (i < retries - 1) await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
-  }
-  throw lastError ?? new Error(`Failed to fetch ${url} after ${retries} retries`);
-}
-
 export async function getDocContent(
   slug: string
 ): Promise<{ meta: DocMeta; content: string } | null> {
   const meta = getDocMeta(slug);
   if (!meta) return null;
 
-  try {
-    const res = await fetchWithRetry(`${DOCS_BASE}/${meta.file}`);
-    const content = await res.text();
-    return { meta, content };
-  } catch (error) {
-    console.error(`Error fetching doc ${meta.file}:`, error);
-    throw error;
+  const filePath = path.join(DOCS_DIR, meta.file);
+
+  if (!fs.existsSync(filePath)) {
+    console.error(`Doc file not found: ${filePath}`);
+    throw new Error(`Doc file not found: ${meta.file}. Run 'pnpm fetch-docs' or check CI workflow.`);
   }
+
+  const content = fs.readFileSync(filePath, "utf-8");
+  return { meta, content };
 }

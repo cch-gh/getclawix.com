@@ -32,6 +32,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Fetch docs from source repo
+        run: |
+          set -e
+          mkdir -p app/v1/content/docs
+          docs="GET_STARTED.md CONFIG.md PROVIDERS.md AGENTS.md SKILLS.md MEMORY.md GOVERNANCE.md SECURITY.md MULTI-USERS.md SPEC.md"
+          for file in $docs; do
+            echo "Fetching $file..."
+            curl -fsSL --retry 3 --retry-delay 2 \
+              "https://raw.githubusercontent.com/ClawixAI/clawix/main/docs/$file" \
+              -o "app/v1/content/docs/$file"
+          done
+          echo "All docs fetched successfully"
+          ls -la app/v1/content/docs/
+
       - name: Build
         run: pnpm build
 
