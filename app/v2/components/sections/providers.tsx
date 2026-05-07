@@ -143,49 +143,55 @@ function InfiniteCarousel<T extends { name: string }>({
   renderItem,
   speed = 30,
   reverse = false,
+  itemWidth = 96,
 }: {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
   speed?: number;
   reverse?: boolean;
+  itemWidth?: number;
 }) {
-  const trackRef = React.useRef<HTMLDivElement>(null);
-  const [setWidth, setSetWidth] = React.useState(0);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = React.useState(0);
 
   React.useEffect(() => {
-    if (!trackRef.current) return;
-    const firstSet = trackRef.current.children[0] as HTMLElement;
-    if (firstSet) setSetWidth(firstSet.offsetWidth);
-
-    const observer = new ResizeObserver(() => {
-      const el = trackRef.current?.children[0] as HTMLElement;
-      if (el) setSetWidth(el.offsetWidth);
-    });
-    observer.observe(trackRef.current);
+    if (!containerRef.current) return;
+    const measure = () => {
+      if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, [items]);
+  }, []);
 
-  const duration = setWidth ? setWidth / speed : 200;
+  const baseSetWidth = items.length * itemWidth;
+  const repeats = Math.max(Math.ceil(containerWidth / baseSetWidth) + 1, 2);
+  const setWidth = repeats * baseSetWidth;
+  const duration = setWidth / speed;
   const animName = reverse ? "carousel-reverse" : "carousel";
 
+  const renderSet = (offset: number) => (
+    <div className="flex shrink-0">
+      {Array.from({ length: repeats }, (_, r) =>
+        items.map((item, i) => renderItem(item, offset + r * items.length + i))
+      )}
+    </div>
+  );
+
   return (
-    <div className="relative overflow-hidden">
+    <div ref={containerRef} className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[var(--color-bg)] to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--color-bg)] to-transparent" />
       <div
-        ref={trackRef}
         className="flex hover:[animation-play-state:paused]"
-        style={setWidth ? {
+        style={containerWidth ? {
           animation: `${animName} ${duration}s linear infinite`,
           willChange: "transform",
         } : undefined}
       >
-        <div className="flex shrink-0">
-          {items.map((item, i) => renderItem(item, i))}
-        </div>
-        <div className="flex shrink-0">
-          {items.map((item, i) => renderItem(item, i + items.length))}
-        </div>
+        {renderSet(0)}
+        {renderSet(repeats * items.length)}
       </div>
     </div>
   );
@@ -217,7 +223,7 @@ export function ProvidersSection() {
 
       <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h3 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Multi-Channel Support
           </h3>
           <p className="mt-4 text-lg text-[var(--color-text-secondary)]">

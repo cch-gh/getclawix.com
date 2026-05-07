@@ -6,7 +6,7 @@ export function FinalCtaSection() {
     <section className="relative overflow-hidden py-20 sm:py-24" style={{ background: "linear-gradient(135deg, var(--color-brand), var(--color-accent))" }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Move from Experiment to Production
           </h2>
           <p className="mt-4 text-lg text-white/80">

@@ -18,8 +18,8 @@ export default function HomePage() {
         <QuickStartSection />
         <FeaturesSection />
         <ProvidersSection />
-        <SecuritySection />
         <WorkspacesSection />
+        <SecuritySection />
         <FinalCtaSection />
       </main>
       <Footer />
