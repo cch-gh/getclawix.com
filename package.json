@@ -1,46 +1,25 @@
 {
   "name": "getclawix.com",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "pnpm": {
-    "ignoredBuiltDependencies": ["sharp", "unrs-resolver"]
+    "ignoredBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@radix-ui/react-slot": "^1.2.4",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "gray-matter": "^4.0.3",
-    "highlight.js": "^11.11.1",
-    "lucide-react": "^1.14.0",
-    "mermaid": "^11.14.0",
-    "next": "16.2.4",
-    "next-intl": "^4.11.0",
-    "next-mdx-remote": "^6.0.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "react-markdown": "^10.1.0",
-    "reading-time": "^1.5.0",
-    "rehype-autolink-headings": "^7.1.0",
-    "rehype-highlight": "^7.0.2",
-    "rehype-slug": "^6.0.0",
-    "remark-gfm": "^4.0.1",
-    "tailwind-merge": "^3.5.0"
+    "dev": "pnpm dev:v1 & pnpm dev:v2 & node scripts/dev-proxy.js",
+    "dev:v1": "pnpm --filter v1 dev",
+    "dev:v2": "pnpm --filter v2 dev",
+    "dev:proxy": "node scripts/dev-proxy.js",
+    "build": "pnpm build:v1 && pnpm build:v2 && pnpm merge-outputs",
+    "build:v1": "pnpm --filter v1 build",
+    "build:v2": "pnpm --filter v2 build",
+    "merge-outputs": "node scripts/merge-outputs.js",
+    "lint": "pnpm -r lint"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/mdx": "^2.0.13",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "http-proxy": "^1.18.1"
   }
 }
