@@ -40,7 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# documents
-docs/
+# fetched docs (markdown from source repo)
+content/docs/
+
+# design documents
 design/
 references/
