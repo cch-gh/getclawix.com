@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import kimiLogo from "@/public/kimi.png";
 
 function AnthropicIcon({ className }: { className?: string }) {
@@ -198,16 +199,18 @@ function InfiniteCarousel<T extends { name: string }>({
 }
 
 export function ProvidersSection() {
+  const t = useTranslations();
+
   return (
     <>
     <section id="providers" className="py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Multi-Provider Support
+            {t("providers.title")}
           </h2>
           <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
-            Switch providers without changing agent logic. No vendor lock-in.
+            {t("providers.description")}
           </p>
         </div>
       </div>
@@ -228,10 +231,10 @@ export function ProvidersSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Multi-Channel Support
+            {t("channels.title")}
           </h2>
           <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
-            Reach users wherever they are. One platform, every channel.
+            {t("channels.description")}
           </p>
         </div>
       </div>

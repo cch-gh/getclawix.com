@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ThemeToggle } from "@/components/theme-toggle";
 import logoImg from "@/public/logo.png";
 
@@ -13,22 +16,23 @@ function GithubIcon({ className }: { className?: string }) {
 
 const footerLinks = {
   product: [
-    { href: "/#features", label: "Features" },
-    { href: "/#providers", label: "Providers" },
-    { href: "/#security", label: "Security" },
+    { href: "/#features", key: "features" },
+    { href: "/#providers", key: "providers" },
+    { href: "/#security", key: "security" },
   ],
   resources: [
-    { href: "/docs/", label: "Docs" },
-    { href: "https://github.com/ClawixAI/clawix", label: "GitHub", external: true },
+    { href: "/docs/", key: "docs" },
+    { href: "https://github.com/ClawixAI/clawix", key: "github", external: true },
   ],
   community: [
-    { href: "https://github.com/ClawixAI/clawix", label: "GitHub", external: true },
-    { href: "https://discord.gg/clawix", label: "Discord", external: true },
+    { href: "https://github.com/ClawixAI/clawix", key: "github", external: true },
+    { href: "https://discord.gg/clawix", key: "discord", external: true },
   ],
 };
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const t = useTranslations("footer");
 
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
@@ -46,7 +50,7 @@ export function Footer() {
               />
             </Link>
             <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-              Self-hosted AI agent orchestration platform.
+              {t("tagline")}
             </p>
             <div className="mt-4 flex items-center gap-3">
               <a
@@ -62,7 +66,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text)]">Product</h3>
+            <h3 className="text-sm font-semibold text-[var(--color-text)]">{t("product")}</h3>
             <ul className="mt-4 space-y-2">
               {footerLinks.product.map((link) => (
                 <li key={link.href}>
@@ -70,7 +74,7 @@ export function Footer() {
                     href={link.href}
                     className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
                   >
-                    {link.label}
+                    {t(`productLinks.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -78,7 +82,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text)]">Resources</h3>
+            <h3 className="text-sm font-semibold text-[var(--color-text)]">{t("resources")}</h3>
             <ul className="mt-4 space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.href}>
@@ -89,14 +93,14 @@ export function Footer() {
                       rel="noopener noreferrer"
                       className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
                     >
-                      {link.label}
+                      {t(`resourceLinks.${link.key}`)}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
                       className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
                     >
-                      {link.label}
+                      {t(`resourceLinks.${link.key}`)}
                     </Link>
                   )}
                 </li>
@@ -105,7 +109,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text)]">Community</h3>
+            <h3 className="text-sm font-semibold text-[var(--color-text)]">{t("community")}</h3>
             <ul className="mt-4 space-y-2">
               {footerLinks.community.map((link) => (
                 <li key={link.href}>
@@ -115,7 +119,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
                   >
-                    {link.label}
+                    {t(`communityLinks.${link.key}`)}
                   </a>
                 </li>
               ))}
@@ -125,7 +129,7 @@ export function Footer() {
 
         <div className="mt-8 border-t border-[var(--color-border)] pt-8 text-center">
           <p className="text-sm text-[var(--color-text-muted)]">
-            &copy; {year} Clawix. Open source under MIT.
+            {t("copyright", { year })}
           </p>
         </div>
       </div>

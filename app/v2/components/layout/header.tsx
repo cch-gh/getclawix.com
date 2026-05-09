@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ThemeToggle } from "@/components/theme-toggle";
 import logoImg from "@/public/logo.png";
 
@@ -17,6 +18,7 @@ function GithubIcon({ className }: { className?: string }) {
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const t = useTranslations("nav");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-bg)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-bg)]/60">
@@ -38,7 +40,7 @@ export function Header() {
             href="/docs/"
             className="text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text)]"
           >
-            Docs
+            {t("docs")}
           </Link>
           <a
             href="https://github.com/ClawixAI/clawix"
@@ -56,7 +58,7 @@ export function Header() {
           <button
             onClick={() => setOpen(!open)}
             className="rounded-lg p-2 text-[var(--color-text)]"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t("closeMenu") : t("openMenu")}
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -71,7 +73,7 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="block rounded-lg px-3 py-2 text-base font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"
             >
-              Docs
+              {t("docs")}
             </Link>
             <a
               href="https://github.com/ClawixAI/clawix"
@@ -80,7 +82,7 @@ export function Header() {
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-base font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)]"
             >
               <GithubIcon className="h-4 w-4" />
-              GitHub
+              {t("github")}
             </a>
           </div>
         </div>

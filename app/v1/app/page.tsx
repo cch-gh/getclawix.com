@@ -8,6 +8,7 @@ import {
   DemoSection,
   EnterpriseSection,
   GitHubSection,
+  FaqSection,
   FinalCtaSection,
 } from "@/components/sections";
 import { generateSoftwareApplicationSchema } from "@/lib/structured-data";
@@ -31,6 +32,7 @@ export default function HomePage() {
         <DemoSection />
         <EnterpriseSection />
         <GitHubSection />
+        <FaqSection />
         <FinalCtaSection />
       </main>
       <Footer />

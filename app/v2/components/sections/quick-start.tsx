@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const commands = `git clone https://github.com/ClawixAI/clawix.git
 cd clawix
@@ -9,6 +10,7 @@ pnpm run install:clawix`;
 
 export function QuickStartSection() {
   const [copied, setCopied] = useState(false);
+  const t = useTranslations("quickStart");
 
   function copyToClipboard() {
     navigator.clipboard.writeText(commands);
@@ -21,7 +23,7 @@ export function QuickStartSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl">
-            Quick Start
+            {t("title")}
           </h2>
           <div className="relative mt-8">
             <div className="overflow-hidden rounded-xl border border-[var(--color-border)]" style={{ backgroundColor: "#1e1e1e" }}>
@@ -38,12 +40,12 @@ export function QuickStartSection() {
                   {copied ? (
                     <>
                       <Check className="h-3.5 w-3.5" />
-                      Copied
+                      {t("copied")}
                     </>
                   ) : (
                     <>
                       <Copy className="h-3.5 w-3.5" />
-                      Copy
+                      {t("copy")}
                     </>
                   )}
                 </button>
