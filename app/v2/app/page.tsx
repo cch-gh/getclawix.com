@@ -5,6 +5,7 @@ import {
   FeaturesSection,
   ProvidersSection,
   SecuritySection,
+  FaqSection,
   WorkspacesSection,
   FinalCtaSection,
 } from "@/components/sections";
@@ -20,6 +21,7 @@ export default function HomePage() {
         <ProvidersSection />
         <WorkspacesSection />
         <SecuritySection />
+        <FaqSection />
         <FinalCtaSection />
       </main>
       <Footer />

@@ -199,6 +199,7 @@ function InfiniteCarousel<T extends { name: string }>({
 
 export function ProvidersSection() {
   return (
+    <>
     <section id="providers" className="py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
@@ -214,18 +215,21 @@ export function ProvidersSection() {
       <div className="mt-12">
         <InfiniteCarousel
           items={providers}
-          speed={15}
+          speed={30}
           renderItem={(p, i) => (
             <CarouselCard key={`${p.name}-${i}`} name={p.name} icon={p.icon} isImage={p.isImage} />
           )}
         />
       </div>
 
-      <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+    </section>
+
+    <section id="channels" className="py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h3 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Multi-Channel Support
-          </h3>
+          </h2>
           <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
             Reach users wherever they are. One platform, every channel.
           </p>
@@ -235,7 +239,7 @@ export function ProvidersSection() {
       <div className="mt-12">
         <InfiniteCarousel
           items={channels}
-          speed={12}
+          speed={24}
           reverse
           renderItem={(c, i) => (
             <CarouselCard key={`${c.name}-${i}`} name={c.name} icon={c.icon} />
@@ -243,5 +247,6 @@ export function ProvidersSection() {
         />
       </div>
     </section>
+    </>
   );
 }
