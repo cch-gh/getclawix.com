@@ -10,22 +10,19 @@ const V2_PORT = 3002;
 const server = http.createServer((req, res) => {
   const url = req.url || "";
 
-  if (url.startsWith("/v1")) {
-    proxy.web(req, res, { target: `http://localhost:${V1_PORT}` });
-  } else if (url.startsWith("/v2")) {
+  if (url.startsWith("/v2")) {
     proxy.web(req, res, { target: `http://localhost:${V2_PORT}` });
   } else {
-    res.writeHead(302, { Location: "/v2/" });
-    res.end();
+    proxy.web(req, res, { target: `http://localhost:${V1_PORT}` });
   }
 });
 
 server.on("upgrade", (req, socket, head) => {
   const url = req.url || "";
-  if (url.startsWith("/v1")) {
-    proxy.ws(req, socket, head, { target: `http://localhost:${V1_PORT}` });
-  } else {
+  if (url.startsWith("/v2")) {
     proxy.ws(req, socket, head, { target: `http://localhost:${V2_PORT}` });
+  } else {
+    proxy.ws(req, socket, head, { target: `http://localhost:${V1_PORT}` });
   }
 });
 
@@ -42,8 +39,7 @@ server.listen(PORT, () => {
   Dev proxy running on http://localhost:${PORT}
 
   Routes:
-    http://localhost:${PORT}/v1/  →  v1 (port ${V1_PORT})
+    http://localhost:${PORT}/     →  v1 (port ${V1_PORT})
     http://localhost:${PORT}/v2/  →  v2 (port ${V2_PORT})
-    http://localhost:${PORT}/     →  redirects to /v2/
   `);
 });

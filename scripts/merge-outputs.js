@@ -27,35 +27,35 @@ if (fs.existsSync(outDir)) {
 }
 fs.mkdirSync(outDir, { recursive: true });
 
-// Copy v1 output to out/v1/
+// Copy v1 output to out/ (v1 serves as root)
 const v1Out = path.join(rootDir, "app/v1/out");
 if (fs.existsSync(v1Out)) {
-  console.log("Copying v1 output to out/v1/");
-  copyDir(v1Out, path.join(outDir, "v1"));
+  console.log("Copying v1 output to out/");
+  copyDir(v1Out, outDir);
 }
 
-// Copy v2 output to out/ (v2 serves as root)
+// Copy v2 output to out/v2/
 const v2Out = path.join(rootDir, "app/v2/out");
 if (fs.existsSync(v2Out)) {
-  console.log("Copying v2 output to out/");
-  copyDir(v2Out, outDir);
+  console.log("Copying v2 output to out/v2/");
+  copyDir(v2Out, path.join(outDir, "v2"));
 }
 
-// Create redirect index.html at root if v2 doesn't exist yet
+// Create redirect index.html at root if v1 doesn't exist yet
 const indexPath = path.join(outDir, "index.html");
 if (!fs.existsSync(indexPath)) {
-  console.log("Creating redirect to v1");
+  console.log("Creating redirect to v2");
   fs.writeFileSync(
     indexPath,
     `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=./v1/">
+  <meta http-equiv="refresh" content="0; url=./v2/">
   <title>Redirecting...</title>
 </head>
 <body>
-  <p>Redirecting to <a href="./v1/">v1</a>...</p>
+  <p>Redirecting to <a href="./v2/">v2</a>...</p>
 </body>
 </html>`
   );

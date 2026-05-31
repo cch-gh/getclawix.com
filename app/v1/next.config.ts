@@ -8,8 +8,8 @@ const isProd = process.env.NODE_ENV === "production";
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: isProd ? "/getclawix.com/v1" : "/v1",
-  assetPrefix: isProd ? "/getclawix.com/v1" : "/v1",
+  basePath: isProd ? "/getclawix.com" : "",
+  assetPrefix: isProd ? "/getclawix.com" : "",
   images: {
     unoptimized: true,
   },
